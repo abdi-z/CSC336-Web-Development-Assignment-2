@@ -2,9 +2,13 @@ const express = require("express");
 let router = express.Router();
 var Job = require("../../models/job");
 const cors = require("cors");
+var app = express();
 
-
-
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 router.get("/", (req, res) => {
   Job.find({}, (err, data) => {
     if (err) {
