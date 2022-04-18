@@ -1,6 +1,9 @@
 const express = require("express");
 let router = express.Router();
 var Job = require("../../models/job");
+const cors = require("cors");
+
+
 
 router.get("/", (req, res) => {
   Job.find({}, (err, data) => {
