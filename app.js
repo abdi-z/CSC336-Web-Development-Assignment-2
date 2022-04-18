@@ -3,8 +3,6 @@ var express = require("express");
 var path = require("path");
 const cors = require("cors");
 
-
-
 var mongoose = require("mongoose");
 var bodyparser = require("body-parser");
 var indexRouter = require("./routes/index");
@@ -17,7 +15,11 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://127.0.0.1:5500",
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
