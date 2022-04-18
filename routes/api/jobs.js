@@ -7,9 +7,21 @@ var app = express();
 app.use(
   cors({
     origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
-router.get("/", (req, res) => {
+
+function somMid(req, res, next) {
+  app.use(
+    cors({
+      origin: "*",
+      methods: ["GET", "POST", "PUT", "DELETE"],
+    })
+  );
+
+  next();
+}
+router.get("/", somMid, (req, res) => {
   Job.find({}, (err, data) => {
     if (err) {
       console.log(err);
@@ -19,7 +31,7 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", somMid, async (req, res) => {
   Job.find({ _id: req.params.id }, (err, data) => {
     if (err) {
       console.log(err);
@@ -29,13 +41,13 @@ router.get("/:id", async (req, res) => {
   });
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", somMid, async (req, res) => {
   await Job.findByIdAndDelete(req.params.id);
   let jobs = await Job.find();
   res.send(jobs);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", somMid, async (req, res) => {
   let job = await Job.findById(req.params.id);
   job.type = await req.body.type;
   job.budget = await req.body.budget;
@@ -44,7 +56,7 @@ router.put("/:id", async (req, res) => {
   res.send(job);
 });
 
-router.post("/", (req, res) => {
+router.post("/", somMid, (req, res) => {
   let NJob = new Job({
     type: req.body.type,
     budget: req.body.budget,
