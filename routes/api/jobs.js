@@ -51,7 +51,7 @@ router.put("/:id", somMid, async (req, res) => {
   let job = await Job.findById(req.params.id);
   job.type = await req.body.type;
   job.budget = await req.body.budget;
-  job.descirption = await req.body.descirption;
+  job.description = await req.body.description;
   await job.save();
   res.send(job);
 });
